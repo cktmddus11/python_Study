@@ -1,0 +1,14 @@
+<h1>{{ question.question_text }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method = "post">
+    {% csrf_token %} <!-- 폼을 처리후 보안 측면에서 CSRF Cross Site Request
+    Forgery 공격에 주의해야함 이를 방지하기 위해 다음과 같은 템플릿 태그를
+사용하면 됨 form 태그 다음에 넣어줌 -->
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{choice.id}}" /> 
+        <label for="choice{{ forloop.counter }}">{{choice.choice_text }}</label><br />
+
+    {% endfor %}
+<input type="submit" value="Vote">
+</form>
